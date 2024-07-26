@@ -7,6 +7,92 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Male.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="Male">
-        <views:MainView />
+        Title="Male"
+        x:CompileBindings="False"
+        x:DataType="vm:MainViewModel"
+        Background="Tan">
+  
+  <Design.DataContext>
+    <vm:MainViewModel />
+  </Design.DataContext>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="4*"/>
+      <ColumnDefinition Width="2*"/>
+     </Grid.ColumnDefinitions>
+
+    <Viewbox Margin="10" Grid.Column="1">
+      <ItemsControl ItemsSource="{Binding ChessBoard}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <UniformGrid Rows="8" Columns="8" Height="1200" Width="1200"/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border Background="{Binding BackgroundColor}">
+              <Border Background="Orange" Opacity="0.3" IsVisible="{Binding IsValidMove}"/>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </Viewbox>
+
+    <Viewbox Margin="10" Grid.Column="1">
+      <ItemsControl ItemsSource="{Binding ChessPieces}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <UniformGrid Rows="8" Columns="8" Height="1200" Width="1200"/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Button CommandParameter="{Binding}" Command="{Binding $parent[ItemsControl].DataContext.SelectPiece}">
+              <Button.Template>
+                <ControlTemplate>
+                  <Grid>
+                    <Image Source="{Binding PieceImage}"/>
+                    <TextBlock Text="" FontSize="25" FontWeight="SemiBold" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="1"/>
+                  </Grid>
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </Viewbox>
+
+    <Viewbox Margin="40" Grid.Column="2">
+      <ItemsControl ItemsSource="{Binding BlackPieces}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <UniformGrid Rows="8" Columns="8" Height="1000" Width="1000"/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Image Source="{Binding PieceImage}"/>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </Viewbox>
+
+    <Viewbox Margin="40" Grid.Column="2" VerticalAlignment="Bottom">
+      <ItemsControl ItemsSource="{Binding WhitePieces}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <UniformGrid Rows="8" Columns="8" Height="1000" Width="1000"/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Image Source="{Binding PieceImage}"/>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </Viewbox>
+      <TextBlock IsVisible="{Binding IsKingInCheck}" Margin="50"  Text ="Check" Grid.Column="0" HorizontalAlignment="Center"/>
+      <TextBlock IsVisible="{Binding IsCheckmate}" Margin="50"  Text ="Checkmate" Grid.Column="2" HorizontalAlignment="Center"/>
+    </Grid>
 </Window>
